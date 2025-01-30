@@ -1,0 +1,15 @@
+[project]
+name = "trustwise-assignment"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Yashvardhan Goel", email = "yash2002goel@gmail.com"},
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false

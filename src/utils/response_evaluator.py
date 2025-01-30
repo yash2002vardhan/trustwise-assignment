@@ -1,22 +1,31 @@
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-model1 = AutoModelForSequenceClassification.from_pretrained("wajidlinux99/gibberish-text-detector")
-model2 = AutoModelForSequenceClassification.from_pretrained('vectara/hallucination_evaluation_model', trust_remote_code=True)
+gibberish_detector_model = AutoModelForSequenceClassification.from_pretrained("wajidlinux99/gibberish-text-detector")
+hallucination_detector_model = AutoModelForSequenceClassification.from_pretrained('vectara/hallucination_evaluation_model', trust_remote_code=True)
 
-tokenizer = AutoTokenizer.from_pretrained("wajidlinux99/gibberish-text-detector")
+gibberish_tokenizer = AutoTokenizer.from_pretrained("wajidlinux99/gibberish-text-detector")
 
-sentence = "The capital of France is Berlin."
+
+gibberish_classification = {
+    0: "clean",
+    1: "mild gibberish", 
+    2: "noise",
+    3: "word salad"
+  }
 
 
 def evaluate_llm_response(response: str):       
-    inputs1 = tokenizer(response, return_tensors="pt")
-    inputs2 = [(response)]
+    gibberish_input = gibberish_tokenizer(response, return_tensors="pt")
+    hallucination_input = [(response)]
 
-    outputs1 = model1(**inputs1)
-    outputs2 = model2.predict(inputs2)
-
-    fomatted_outputs1 = max(outputs1.logits[0].detach().numpy().tolist())
-    formatted_outputs2 = outputs2.tolist()[0]
+    gibberish_output = gibberish_detector_model(**gibberish_input)
+    hallucination_output = hallucination_detector_model.predict(hallucination_input)
 
 
-    return {"gibberish": fomatted_outputs1, "hallucination": formatted_outputs2}
+    gibberish_class_index = gibberish_output.logits[0].detach().numpy().argmax()
+    gibberish_class_label = gibberish_classification[gibberish_class_index]
+    gibberish_confidence = max(gibberish_output.logits[0].detach().numpy().tolist())
+    hallucination_confidence = hallucination_output.tolist()[0]
+
+
+    return {"gibberish": {"class" : gibberish_class_label, "score" : gibberish_confidence}, "hallucination": hallucination_confidence}

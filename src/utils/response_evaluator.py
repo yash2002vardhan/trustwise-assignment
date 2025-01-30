@@ -15,8 +15,8 @@ def evaluate_llm_response(response: str):
     outputs1 = model1(**inputs1)
     outputs2 = model2.predict(inputs2)
 
-    fomatted_outputs1 = outputs1.logits[0].detach().numpy().tolist()
-    formatted_outputs2 = outputs2.tolist()
+    fomatted_outputs1 = max(outputs1.logits[0].detach().numpy().tolist())
+    formatted_outputs2 = outputs2.tolist()[0]
 
 
     return {"gibberish": fomatted_outputs1, "hallucination": formatted_outputs2}

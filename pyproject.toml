@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Yashvardhan Goel", email = "yash2002goel@gmail.com"},
 ]
-dependencies = []
+dependencies = ["fastapi[standard]>=0.115.8", "transformers>=4.48.1", "torch>=2.6.0"]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,3 +13,7 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.scripts]
+dev = "uvicorn src.main:app --reload"
+prod = "uvicorn src.main:app --host 0.0.0.0 --port 8000"

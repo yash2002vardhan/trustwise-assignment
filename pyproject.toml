@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Yashvardhan Goel", email = "yash2002goel@gmail.com"},
 ]
-dependencies = ["fastapi[standard]>=0.115.8", "transformers>=4.48.1", "torch>=2.6.0"]
+dependencies = ["fastapi[standard]>=0.115.8", "transformers>=4.48.1", "torch>=2.6.0", "supabase>=2.12.0", "pydantic>=2.10.6", "pydantic-settings>=2.7.1"]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
